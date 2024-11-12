@@ -1,2 +1,7 @@
-build/*
-*.mod
+build/
+.idea/
+*.elf
+*.wps
+cmake-build-debug/
+CMakeLists.txt
+.vscode/settings.json
