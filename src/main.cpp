@@ -15,9 +15,11 @@ ON_APPLICATION_START() { initLogging(); }
 ON_APPLICATION_ENDS() { deinitLogging(); }
 
 DECL_FUNCTION(int32_t, VPADRead, int32_t chan, VPADStatus *buffer,
-              uint32_t buffer_size, int32_t *error) {
-  int32_t result = real_VPADRead(chan, buffer, buffer_size, error);
-  if (result > 0 && *error == VPAD_READ_SUCCESS) {
+              uint32_t buffer_size, VPADReadError *error) {
+  VPADReadError real_error = VPAD_READ_SUCCESS;
+  int32_t result = real_VPADRead(chan, buffer, buffer_size, &real_error);
+
+  if (result > 0 && real_error == VPAD_READ_SUCCESS) {
     if (buffer[0].hold == (VPAD_BUTTON_ZL | VPAD_BUTTON_L | VPAD_BUTTON_DOWN)) {
       WPADDisconnect(WPAD_CHAN_0);
     } else if (buffer[0].hold ==
