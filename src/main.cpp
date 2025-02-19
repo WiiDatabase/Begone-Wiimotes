@@ -19,6 +19,10 @@ DECL_FUNCTION(int32_t, VPADRead, int32_t chan, VPADStatus *buffer,
   VPADReadError real_error = VPAD_READ_SUCCESS;
   int32_t result = real_VPADRead(chan, buffer, buffer_size, &real_error);
 
+  if (error) {
+    *error = real_error;
+  }
+
   if (result > 0 && real_error == VPAD_READ_SUCCESS) {
     if (buffer[0].hold == (VPAD_BUTTON_ZL | VPAD_BUTTON_L | VPAD_BUTTON_DOWN)) {
       WPADDisconnect(WPAD_CHAN_0);
